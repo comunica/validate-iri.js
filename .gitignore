@@ -17,3 +17,6 @@ yarn-error.log
 coverage
 documentation
 .eslintcache
+perf/*.jsonld
+perf/*.json
+perf/*.js
