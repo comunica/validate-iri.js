@@ -47,6 +47,8 @@
     "eslint-plugin-tsdoc": "^0.2.7",
     "eslint-plugin-unused-imports": "^1.0.0",
     "jest": "^26.0.0",
+    "jsonld": "^5.2.0",
+    "jsonld-streaming-parser": "^2.4.2",
     "manual-git-changelog": "^1.0.0",
     "pre-commit": "^1.2.2",
     "ts-jest": "^26.0.0",
@@ -82,6 +84,8 @@
     "build": "tsc",
     "validate": "npm ls",
     "prepare": "npm run build",
-    "version": "manual-git-changelog onversion"
+    "version": "manual-git-changelog onversion",
+    "download-performance-data": "curl https://json-ld.org/test-suite/tests/toRdf-manifest.jsonld > perf/toRdf-manifest.jsonld && curl https://raw.githubusercontent.com/comunica/comunica/master/packages/actor-init-sparql/config/sets/sparql-init.json > perf/sparql-init.json",
+    "performance": "npx tsc perf/jsonLdParserPerf.ts && node perf/jsonLdParserPerf.js"
   }
 }
