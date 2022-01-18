@@ -72,7 +72,7 @@ export function validateIri(iri: string, strategy: Strategies = defaultStrategy)
   if (strategy === Strategies.Pragmatic) {
     const parsedUrn = RFC2141.parse(iri);
     if (!parsedUrn) {
-      return new InvalidIriError('Could not parse for the URN phase.');
+      return new InvalidIriError(`Could not parse the given IRI as URN: ${iri}`);
     }
     const urnValidationErrors = RFC2141.validate(parsedUrn);
     const isValidUrn = !urnValidationErrors;
