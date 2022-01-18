@@ -21,37 +21,37 @@ describe('pragmatic strategy', () => {
   });
 
   for (const correctUrl of correctUrls) {
-    test(correctUrl, () => {
+    test(`correct ${correctUrl}`, () => {
       expect(validateIri(correctUrl)).toBe(undefined);
     });
   }
 
-  for (const incorrectUrl of incorrectUrls) {
-    test(incorrectUrl, () => {
-      expect(validateIri(incorrectUrl)).toBeInstanceOf(Error);
-    });
-  }
-
-  for (const correctUri of correctUris) {
-    test(correctUri, () => {
-      expect(validateIri(correctUri)).toBe(undefined);
-    });
-  }
-
-  for (const incorrectUri of incorrectUris) {
-    test(incorrectUri, () => {
-      expect(validateIri(incorrectUri)).toBeInstanceOf(Error);
-    });
-  }
-
   for (const correctUrn of correctUrns) {
-    test(correctUrn, () => {
+    test(`correct ${correctUrn}`, () => {
       expect(validateIri(correctUrn)).toBe(undefined);
     });
   }
 
+  for (const correctUri of correctUris) {
+    test(`correct ${correctUri}`, () => {
+      expect(validateIri(correctUri)).toBe(undefined);
+    });
+  }
+
+  for (const incorrectUrl of incorrectUrls) {
+    test(`incorrect ${incorrectUrl}`, () => {
+      expect(validateIri(incorrectUrl)).toBeInstanceOf(Error);
+    });
+  }
+
+  for (const incorrectUri of incorrectUris) {
+    test(`incorrect ${incorrectUri}`, () => {
+      expect(validateIri(incorrectUri)).toBeInstanceOf(Error);
+    });
+  }
+
   for (const incorrectUrn of incorrectUrns) {
-    test(incorrectUrn, () => {
+    test(`incorrect ${incorrectUrn}`, () => {
       expect(validateIri(incorrectUrn)).toBeInstanceOf(Error);
     });
   }

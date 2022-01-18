@@ -25,8 +25,18 @@ export const correctUrns = [
   'urn:mrn:iala:pub:g1143',
   'urn:microsoft:adfs:claimsxray',
   'urn:isan:0000-0000-9E59-0000-O-0000-0000-2',
+
+  // @see https://datatracker.ietf.org/doc/html/rfc2141#section-6
+  'URN:foo:a123,456',
+  'urn:foo:a123,456',
+  'urn:FOO:a123,456',
+  'urn:foo:A123,456',
+  'urn:foo:a123%2C456',
+  'URN:FOO:a123%2c456',
 ];
 
+// @see https://github.com/cmawhorter/urn-lib/blob/master/test/__tests__/fixtures/aws-urns.ts
+// urns that have more parts than allowed by the spec.
 export const incorrectUrns = [
   'arn:aws:logs:us-east-1:account-id:log-group:log_group_name',
   'arn:aws:logs:us-east-1:account-id:log-group:log_group_name:*',
