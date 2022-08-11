@@ -23,7 +23,11 @@ This package also works out-of-the-box in browsers via tools such as [webpack](h
 
 ## Usage
 
-TODO
+```
+import { validateIri } from 'validate-iri`
+const yourIri = 'https://example.com/john-doe'
+validateIri(yourIri) // Will throw an error if the IRI is invalid.
+```
 
 ## License
 
