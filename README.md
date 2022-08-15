@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/comunica/validate-iri.js/badge.svg?branch=master)](https://coveralls.io/github/comunica/validate-iri.js?branch=master)
 [![npm version](https://badge.fury.io/js/validate-iri.svg)](https://www.npmjs.com/package/validate-iri)
 
-This tool validates an IRI according to RFC 3987
+This tool validates an IRI according to RFC 3987.
 It works in both JavaScript and TypeScript.
 
 TODO
@@ -23,10 +23,16 @@ This package also works out-of-the-box in browsers via tools such as [webpack](h
 
 ## Usage
 
+Multiple validation modes are provided:
+- `IriValidationStrategy.Strict`: carefully validates the IRI using RFC 3987 grammar. This is the default value.
+- `IriValidationStrategy.Pragmatic`: quickly validates that the IRI has a valid scheme and does not contain any character forbidden by the N-Triples, Turtle and N3 grammars.
+- `IriValidationStrategy.None`: does not validate the IRI at all.
+
+Example:
 ```
-import { validateIri } from 'validate-iri`
+import { validateIri, IriValidationStrategy } from 'validate-iri`
 const yourIri = 'https://example.com/john-doe'
-validateIri(yourIri) // Will throw an error if the IRI is invalid.
+validateIri(yourIri, IriValidationStrategy.Pragmatic) // Will throw an error if the IRI is invalid.
 ```
 
 ## License
