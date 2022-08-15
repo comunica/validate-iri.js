@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { validateIri } from '..';
+import { IriValidationStrategy, validateIri } from '..';
 
 const ITERATIONS = 100_000;
 
@@ -94,21 +94,19 @@ console.time(FULL_TIMER);
 
 for (let i = 0; i < ITERATIONS; i++) {
   for (const iri of VALID_ABSOLUTE_IRIS) {
-    validateIri(iri);
+    validateIri(iri, IriValidationStrategy.Strict);
   }
 }
 
 console.timeEnd(FULL_TIMER);
 
 const PARTIAL_TIMER = 'Partial IRI validation';
-// eslint-disable-next-line no-control-regex
-const PARTIAL_REGEX = /^[a-zA-Z][a-zA-Z0-9+\-.]*:[^\u0000-\u0020"<>\\^`{|}]$/u;
 
 console.time(PARTIAL_TIMER);
 
 for (let i = 0; i < ITERATIONS; i++) {
   for (const iri of VALID_ABSOLUTE_IRIS) {
-    PARTIAL_REGEX.test(iri);
+    validateIri(iri, IriValidationStrategy.Pragmatic);
   }
 }
 

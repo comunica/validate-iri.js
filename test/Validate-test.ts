@@ -1,4 +1,4 @@
-import { validateIri } from '../lib/Validate';
+import { IriValidationStrategy, validateIri } from '../lib/Validate';
 
 const VALID_ABSOLUTE_IRIS = [
   'file://foo',
@@ -96,11 +96,14 @@ const VALID_ABSOLUTE_IRIS = [
   'http://example.com/?\u{E000}',
 ];
 
-const INVALID_ABSOLUTE_IRIS = [
+const ALWAYS_INVALID_ABSOLUTE_IRIS = [
   '',
   'foo',
   'http://example.com/beepbeep\u0007\u0007',
   'http://example.com/\n',
+];
+
+const STRICTLY_INVALID_ABSOLUTE_IRIS = [
   // "::", // not OK, per Roy Fielding on the W3C uri list on 2004-04-01
   //
   // the following test cases are from a Perl script by David A. Wheeler
@@ -183,13 +186,31 @@ const INVALID_ABSOLUTE_IRIS = [
 describe('Validate', () => {
   for (const iri of VALID_ABSOLUTE_IRIS) {
     test(`the IRI '${iri}' should be valid`, () => {
-      expect(validateIri(iri)).toBeUndefined();
+      expect(validateIri(iri, IriValidationStrategy.Strict)).toBeUndefined();
+      expect(validateIri(iri, IriValidationStrategy.Pragmatic)).toBeUndefined();
     });
   }
 
-  for (const iri of INVALID_ABSOLUTE_IRIS) {
-    test(`the IRI '${iri}' should be invalid`, () => {
+  for (const iri of ALWAYS_INVALID_ABSOLUTE_IRIS) {
+    test(`the IRI '${iri}' should be invalid according to pragmatic and strict modes`, () => {
+      expect(validateIri(iri, IriValidationStrategy.Pragmatic)).toBeInstanceOf(Error);
+      expect(validateIri(iri, IriValidationStrategy.Strict)).toBeInstanceOf(Error);
+    });
+  }
+
+  for (const iri of STRICTLY_INVALID_ABSOLUTE_IRIS) {
+    test(`the IRI '${iri}' should be invalid according to strict mode`, () => {
       expect(validateIri(iri)).toBeInstanceOf(Error);
     });
   }
+
+  test('the validateIri function should not fail on invalid strategy', () => {
+    // @ts-expect-error
+    expect(validateIri('http://example.com/', 'foo')).toBeInstanceOf(Error);
+  });
+
+  test('the validateIri function should always validate with the none strategy', () => {
+    expect(validateIri('', IriValidationStrategy.None)).toBeUndefined();
+    expect(validateIri('\n', IriValidationStrategy.None)).toBeUndefined();
+  });
 });

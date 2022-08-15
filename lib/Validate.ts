@@ -1,4 +1,4 @@
-function buildAbsoluteIriRegex(): RegExp {
+function buildAbsoluteIriRfc3987Regex(): RegExp {
   // The syntax is defined in https://www.rfc-editor.org/rfc/rfc3987#section-2.2
   // Rules are defined in reversed order
 
@@ -58,13 +58,51 @@ function buildAbsoluteIriRegex(): RegExp {
   return new RegExp(iri, 'u');
 }
 
-const IRI_REGEX: RegExp = buildAbsoluteIriRegex();
+const STRICT_IRI_REGEX: RegExp = buildAbsoluteIriRfc3987Regex();
+// eslint-disable-next-line no-control-regex
+const PRAGMATIC_IRI_REGEX = /^[A-Za-z][\d+-.A-Za-z]*:[^\u0000-\u0020"<>\\^`{|}]*$/u;
 
 /**
- * Validate a given IRI according to RFC 3987.
+ * Possible ways of validating an IRI
+ */
+export enum IriValidationStrategy {
+  /**
+   * Validates the IRI according to RFC 3987.
+   */
+  Strict = 'strict',
+
+  /**
+   * Validates that the IRI has a valid scheme and does not contain any character forbidden by the Turtle specification.
+   */
+  Pragmatic = 'pragmatic',
+
+  /**
+   * Does not validate the IRI at all.
+   */
+  None = 'none'
+}
+
+/**
+ * Validate a given IRI according to the given strategy.
+ *
+ * By default the IRI is fully validated according to RFC 3987.
+ * But it is possible to do a lighter a faster validation using the "pragmatic" strategy.
+ *
  * @param {string} iri a string that may be an IRI.
+ * @param {IriValidationStrategy} strategy IRI validation strategy.
  * @return {Error | undefined} An error if the IRI is invalid, or undefined if it is valid.
  */
-export function validateIri(iri: string): Error | undefined {
-  return IRI_REGEX.test(iri) ? undefined : new Error(`Invalid IRI according to RFC 3987: '${iri}'`);
+export function validateIri(
+  iri: string, strategy: IriValidationStrategy = IriValidationStrategy.Strict,
+): Error | undefined {
+  switch (strategy) {
+    case IriValidationStrategy.Strict:
+      return STRICT_IRI_REGEX.test(iri) ? undefined : new Error(`Invalid IRI according to RFC 3987: '${iri}'`);
+    case IriValidationStrategy.Pragmatic:
+      return PRAGMATIC_IRI_REGEX.test(iri) ? undefined : new Error(`Invalid IRI according to RDF Turtle: '${iri}'`);
+    case IriValidationStrategy.None:
+      return undefined;
+    default:
+      return new Error(`Not supported validation strategy "${strategy}"`);
+  }
 }
