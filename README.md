@@ -4,10 +4,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/comunica/validate-iri.js/badge.svg?branch=master)](https://coveralls.io/github/comunica/validate-iri.js?branch=master)
 [![npm version](https://badge.fury.io/js/validate-iri.svg)](https://www.npmjs.com/package/validate-iri)
 
-This tool validates an IRI according to RFC 3987.
+This tool validates an IRI, either using strict RFC 3987 grammar, or using a faster but less strict pragmatic validation mode.
 It works in both JavaScript and TypeScript.
-
-TODO
 
 ## Installation
 
@@ -34,6 +32,17 @@ import { validateIri, IriValidationStrategy } from 'validate-iri`
 const yourIri = 'https://example.com/john-doe'
 validateIri(yourIri, IriValidationStrategy.Pragmatic) // Will throw an error if the IRI is invalid.
 ```
+
+## Performance
+
+When using strict validation mode, a significant performance overhead should be taken into account.
+In isolation, strict validation is an order of magnitude slower than pragmatic validation.
+
+When used in a parser such as [rdfxml-streaming-parser.js](https://github.com/rdfjs/rdfxml-streaming-parser.js/), the performance impact on parsing is the following (GeoSpecies Knowledge Base with 1.8M triples):
+
+- Strict validation: 12.053s
+- Pragmatic validation: 9.116s
+- No validation: 8.338s
 
 ## License
 
