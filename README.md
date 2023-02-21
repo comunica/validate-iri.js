@@ -28,9 +28,9 @@ Multiple validation modes are provided:
 
 Example:
 ```
-import { validateIri, IriValidationStrategy } from 'validate-iri`
+import { validateIri, IriValidationStrategy } from 'validate-iri'
 const yourIri = 'https://example.com/john-doe'
-validateIri(yourIri, IriValidationStrategy.Pragmatic) // Will throw an error if the IRI is invalid.
+validateIri(yourIri, IriValidationStrategy.Pragmatic) // Will return an error if the IRI is invalid.
 ```
 
 ## Performance
