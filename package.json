@@ -14,6 +14,10 @@
   "typings": "index",
   "repository": "git@github.com:comunica/validate-iri.js.git",
   "author": "Ruben Taelman <rubensworks@gmail.com>",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/comunica-association"
+  },
   "bugs": {
     "url": "https://github.com/comunica/validate-iri.js/issues"
   },
