@@ -184,32 +184,29 @@ const STRICTLY_INVALID_ABSOLUTE_IRIS = [
 ];
 
 describe('Validate', () => {
-  for (const iri of VALID_ABSOLUTE_IRIS) {
-    test(`the IRI '${iri}' should be valid`, () => {
-      expect(validateIri(iri, IriValidationStrategy.Strict)).toBeUndefined();
-      expect(validateIri(iri, IriValidationStrategy.Pragmatic)).toBeUndefined();
-    });
-  }
+  it.each(VALID_ABSOLUTE_IRIS)(`the IRI '%s' should be valid`, (iri) => {
+    expect(validateIri(iri, IriValidationStrategy.Strict)).toBeUndefined();
+    expect(validateIri(iri, IriValidationStrategy.Pragmatic)).toBeUndefined();
+  });
 
-  for (const iri of ALWAYS_INVALID_ABSOLUTE_IRIS) {
-    test(`the IRI '${iri}' should be invalid according to pragmatic and strict modes`, () => {
+  it.each(ALWAYS_INVALID_ABSOLUTE_IRIS)(
+    `the IRI '%s' should be invalid according to pragmatic and strict modes`,
+    (iri) => {
       expect(validateIri(iri, IriValidationStrategy.Pragmatic)).toBeInstanceOf(Error);
       expect(validateIri(iri, IriValidationStrategy.Strict)).toBeInstanceOf(Error);
-    });
-  }
+    },
+  );
 
-  for (const iri of STRICTLY_INVALID_ABSOLUTE_IRIS) {
-    test(`the IRI '${iri}' should be invalid according to strict mode`, () => {
-      expect(validateIri(iri)).toBeInstanceOf(Error);
-    });
-  }
+  it.each(STRICTLY_INVALID_ABSOLUTE_IRIS)(`the IRI '%s' should be invalid according to strict mode`, (iri) => {
+    expect(validateIri(iri)).toBeInstanceOf(Error);
+  });
 
-  test('the validateIri function should not fail on invalid strategy', () => {
+  it('the validateIri function should not fail on invalid strategy', () => {
     // @ts-expect-error
     expect(validateIri('http://example.com/', 'foo')).toBeInstanceOf(Error);
   });
 
-  test('the validateIri function should always validate with the none strategy', () => {
+  it('the validateIri function should always validate with the none strategy', () => {
     expect(validateIri('', IriValidationStrategy.None)).toBeUndefined();
     expect(validateIri('\n', IriValidationStrategy.None)).toBeUndefined();
   });
