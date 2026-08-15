@@ -65,6 +65,7 @@ const PRAGMATIC_IRI_REGEX = /^[A-Za-z][\d+-.A-Za-z]*:[^\u0000-\u0020"<>\\^`{|}]*
 /**
  * Possible ways of validating an IRI
  */
+/* eslint-disable ts/naming-convention -- These members are public API; renaming them would be breaking. */
 export enum IriValidationStrategy {
   /**
    * Validates the IRI according to RFC 3987.
@@ -81,6 +82,7 @@ export enum IriValidationStrategy {
    */
   None = 'none',
 }
+/* eslint-enable ts/naming-convention */
 
 /**
  * Validate a given IRI according to the given strategy.
